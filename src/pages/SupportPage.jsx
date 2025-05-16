@@ -6,7 +6,7 @@
 
     const SupportPage = () => {
       const supportEmail = "jcgtmgm@gmail.com";
-      const discordInviteLink = "https://discord.gg/EQYW57pdDM";
+      const discordInviteLink = "https://discord.com/invite/2FSkAJPHxY";
 
       const contactOptions = [
         {

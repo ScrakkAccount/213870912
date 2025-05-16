@@ -1,14 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link, NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Home, ShoppingCart, HelpCircle, Server, Settings, Package } from 'lucide-react';
+import { Home, ShoppingCart, HelpCircle, Settings } from 'lucide-react';
 import HomePage from '@/pages/HomePage';
 import ShopPage from '@/pages/ShopPage';
 import SupportPage from '@/pages/SupportPage';
-import OrderReviewPage from '@/pages/OrderReviewPage';
 import { Toaster } from '@/components/ui/toaster';
 import { Button } from '@/components/ui/button';
-import AdminProductsPage from './pages/AdminProductsPage';
 import { TooltipProvider } from "@/components/ui/tooltip";
 import ConnectionStatus from './components/ConnectionStatus';
 
@@ -53,8 +51,6 @@ const App = () => {
                 <NavLink to="/" className={navLinkClasses}><Home {...iconProps} /> Inicio</NavLink>
                 <NavLink to="/shop" className={navLinkClasses}><ShoppingCart {...iconProps} /> Comprar</NavLink>
                 <NavLink to="/support" className={navLinkClasses}><HelpCircle {...iconProps} /> Soporte</NavLink>
-                <NavLink to="/admin/products" className={navLinkClasses}><Package {...iconProps} /> Administrar Productos</NavLink>
-                <NavLink to="/admin/orders" className={navLinkClasses}><Server {...iconProps} /> Revisar Pedidos</NavLink>
               </nav>
               <div className="flex items-center space-x-2">
                 {/* Recuadro de búsqueda eliminado */}
@@ -76,8 +72,6 @@ const App = () => {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/shop" element={<ShopPage />} />
                 <Route path="/support" element={<SupportPage />} />
-                <Route path="/admin/orders" element={<OrderReviewPage />} />
-                <Route path="/admin/products" element={<AdminProductsPage />} />
               </Routes>
             </motion.div>
           </main>

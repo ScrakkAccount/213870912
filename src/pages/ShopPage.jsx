@@ -20,7 +20,7 @@ const iconComponents = {
 };
 
 // Enlace a Discord como respaldo por si no se carga desde la base de datos
-const discordInviteLink = "dsc.gg/ryven";
+const discordInviteLink = "https://discord.com/invite/2FSkAJPHxY";
 
 const ShopPage = () => {
   const [products, setProducts] = useState([]);
