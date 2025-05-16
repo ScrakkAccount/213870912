@@ -309,14 +309,14 @@ const ShopPage = () => {
                         </CardHeader>
                       )}
                       
-                      <CardContent className="flex-grow p-6 space-y-3">
-                        <div className="text-muted-foreground text-sm leading-relaxed">
+                      <CardContent className="flex-grow p-6 flex flex-col">
+                        <div className="text-muted-foreground text-sm leading-relaxed flex-grow mb-6">
                           {product.description.split('\n').map((line, i) => (
                             <p key={i} className="mb-1">{line}</p>
                           ))}
                         </div>
                         <motion.div 
-                          className="flex items-center justify-center text-3xl font-bold text-primary"
+                          className="flex items-center justify-center text-3xl font-bold text-primary mt-auto"
                           whileHover={{ scale: 1.1 }}
                           transition={{ type: "spring", stiffness: 300, damping: 10 }}
                         >

@@ -355,32 +355,34 @@ const AdminProductsPage = () => {
                         </div>
                         <p className="text-sm text-muted-foreground">{product.category}</p>
                       </CardHeader>
-                      <CardContent className="space-y-4">
-                        <div className="text-sm text-muted-foreground">
+                      <CardContent className="space-y-4 flex flex-col" style={{minHeight: "180px"}}>
+                        <div className="text-sm text-muted-foreground flex-grow">
                           {product.description.split('\n').slice(0, 2).map((line, i) => (
                             <p key={i} className="mb-1">{line}</p>
                           ))}
                           {product.description.split('\n').length > 2 && <p className="text-xs text-muted-foreground">...</p>}
                         </div>
-                        <p className="text-xl font-bold text-primary">${product.price.toFixed(2)}</p>
-                        
-                        <div className="flex justify-between pt-2">
-                          <Button 
-                            variant="outline" 
-                            size="sm"
-                            onClick={() => handleEditProduct(product)}
-                            className="border-primary/30 text-primary hover:bg-primary/10"
-                          >
-                            <Edit className="h-4 w-4 mr-2" /> Editar
-                          </Button>
-                          <Button 
-                            variant="destructive" 
-                            size="sm"
-                            onClick={() => handleDeleteProduct(product.id)}
-                            className="bg-red-500/20 text-red-500 hover:bg-red-500/30 hover:text-red-400"
-                          >
-                            <Trash2 className="h-4 w-4 mr-2" /> Eliminar
-                          </Button>
+                        <div className="mt-auto">
+                          <p className="text-xl font-bold text-primary mb-3">${product.price.toFixed(2)}</p>
+                          
+                          <div className="flex justify-between pt-2">
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              onClick={() => handleEditProduct(product)}
+                              className="border-primary/30 text-primary hover:bg-primary/10"
+                            >
+                              <Edit className="h-4 w-4 mr-2" /> Editar
+                            </Button>
+                            <Button 
+                              variant="destructive" 
+                              size="sm"
+                              onClick={() => handleDeleteProduct(product.id)}
+                              className="bg-red-500/20 text-red-500 hover:bg-red-500/30 hover:text-red-400"
+                            >
+                              <Trash2 className="h-4 w-4 mr-2" /> Eliminar
+                            </Button>
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
