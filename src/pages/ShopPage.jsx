@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/components/ui/use-toast';
-import { ShoppingBag, Code, Map, Palette, Brain, DollarSign, User, Mail, MessageSquare, Search } from 'lucide-react';
+import { ShoppingBag, Code, Map, Palette, Brain, DollarSign, User, Mail, MessageSquare, Search, Copy, Check, ExternalLink, X } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 import { supabase, supabaseQuery, isSupabaseConnected } from '@/lib/supabaseClient';
 
@@ -30,6 +30,8 @@ const ShopPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
+  const [successOrder, setSuccessOrder] = useState(null);
+  const [copied, setCopied] = useState(false);
 
   // Cargar productos desde Supabase al montar el componente
   useEffect(() => {
@@ -75,6 +77,13 @@ const ShopPage = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
   };
 
   const handleSubmitOrder = async (e) => {
@@ -124,24 +133,11 @@ const ShopPage = () => {
 
       console.log("Pedido guardado correctamente:", data);
 
-      // Mostrar mensaje de éxito
-      toast({
-        title: "¡Pedido Realizado!",
-        description: (
-          <div>
-            <p>Tu pedido con ID <strong className="text-primary">{orderId}</strong> ha sido registrado.</p>
-            <p className="mt-2">Serás contactado en Discord para completar la compra.</p>
-            <p className="mt-1">Únete a nuestro servidor de Discord:</p>
-            <Button 
-              variant="link" 
-              className="p-0 h-auto text-red-400 hover:text-red-300"
-              onClick={() => window.open(discordInviteLink, '_blank')}
-            >
-              {discordInviteLink.replace('https://', '')}
-            </Button>
-          </div>
-        ),
-        duration: 10000,
+      // Configurar datos para el modal de éxito
+      setSuccessOrder({
+        orderId: orderId,
+        productName: selectedProduct.name,
+        price: selectedProduct.price
       });
       
       // Limpiar el formulario y cerrar el modal
@@ -342,6 +338,7 @@ const ShopPage = () => {
         </AnimatePresence>
       )}
 
+      {/* Modal de formulario de pedido */}
       <AnimatePresence>
         {selectedProduct && (
           <motion.div
@@ -473,6 +470,79 @@ const ShopPage = () => {
                   </motion.div>
                 </motion.div>
               </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Modal de pedido exitoso */}
+      <AnimatePresence>
+        {successOrder && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 50 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 50 }}
+              transition={{ duration: 0.4, type: "spring", stiffness: 300, damping: 25 }}
+              className="bg-background p-8 rounded-xl shadow-2xl w-full max-w-md border border-primary/50 glassmorphism"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex justify-between items-start mb-4">
+                <h2 className="text-3xl font-bold text-primary">¡Pedido Realizado!</h2>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="text-muted-foreground hover:text-primary"
+                  onClick={() => setSuccessOrder(null)}
+                >
+                  <X className="h-5 w-5" />
+                </Button>
+              </div>
+              
+              <div className="space-y-6 mb-6">
+                <div className="bg-primary/10 p-4 rounded-lg border border-primary/30">
+                  <p className="text-lg mb-2">Tu pedido <span className="font-bold text-primary">{successOrder.productName}</span> ha sido registrado.</p>
+                  <div className="flex items-center justify-between bg-black/30 p-3 rounded-md">
+                    <p className="font-mono text-lg text-primary font-bold">{successOrder.orderId}</p>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="border-primary/30 text-primary hover:bg-primary/10"
+                      onClick={() => copyToClipboard(successOrder.orderId)}
+                    >
+                      {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                    </Button>
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <p className="text-center text-muted-foreground">Serás contactado en Discord para completar la compra.</p>
+                  <p className="text-center text-sm text-muted-foreground">Asegúrate de guardar el ID de tu pedido.</p>
+                </div>
+                
+                <div className="flex flex-col space-y-3">
+                  <Button 
+                    className="bg-[#5865F2] hover:bg-[#4752c4] text-white"
+                    onClick={() => window.open(discordInviteLink, '_blank')}
+                  >
+                    <ExternalLink className="mr-2 h-4 w-4" /> Unirse a Discord
+                  </Button>
+                  
+                  <Button 
+                    variant="outline"
+                    className="border-primary/30 text-primary hover:bg-primary/10"
+                    onClick={() => setSuccessOrder(null)}
+                  >
+                    Cerrar
+                  </Button>
+                </div>
+              </div>
             </motion.div>
           </motion.div>
         )}
