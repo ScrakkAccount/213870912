@@ -356,7 +356,12 @@ const AdminProductsPage = () => {
                         <p className="text-sm text-muted-foreground">{product.category}</p>
                       </CardHeader>
                       <CardContent className="space-y-4">
-                        <p className="text-sm text-muted-foreground line-clamp-2">{product.description}</p>
+                        <div className="text-sm text-muted-foreground">
+                          {product.description.split('\n').slice(0, 2).map((line, i) => (
+                            <p key={i} className="mb-1">{line}</p>
+                          ))}
+                          {product.description.split('\n').length > 2 && <p className="text-xs text-muted-foreground">...</p>}
+                        </div>
                         <p className="text-xl font-bold text-primary">${product.price.toFixed(2)}</p>
                         
                         <div className="flex justify-between pt-2">

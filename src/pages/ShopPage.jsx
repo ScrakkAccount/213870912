@@ -310,7 +310,11 @@ const ShopPage = () => {
                       )}
                       
                       <CardContent className="flex-grow p-6 space-y-3">
-                        <p className="text-muted-foreground text-sm leading-relaxed">{product.description}</p>
+                        <div className="text-muted-foreground text-sm leading-relaxed">
+                          {product.description.split('\n').map((line, i) => (
+                            <p key={i} className="mb-1">{line}</p>
+                          ))}
+                        </div>
                         <motion.div 
                           className="flex items-center justify-center text-3xl font-bold text-primary"
                           whileHover={{ scale: 1.1 }}
